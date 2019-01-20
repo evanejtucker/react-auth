@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/evanejtucker/react-auth/issues"
   },
-  "homepage": "https://github.com/evanejtucker/react-auth#readme"
+  "homepage": "https://github.com/evanejtucker/react-auth#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.5",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "colors": "^1.3.3"
+  }
 }
