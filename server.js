@@ -1,13 +1,27 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const PORT = 3001;
-const colors = require('colors');
-const mongoose = require('mongoose');
-const routes = require("./routes")
+const colors = require("colors");
+const mongoose = require("mongoose");
+const routes = require("./routes");
+const session = require("express-session");
+const passport = require("passport");
+const logger = require("morgan");
+const flash = require('connect-flash');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(logger("dev"));
+app.use(flash())
 app.use(express.static("public"));
+app.use(session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    // cookie: { secure: true }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get("/", (req, res, next)=> {
     res.send("hello world")

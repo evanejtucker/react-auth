@@ -28,6 +28,12 @@ const usersSchema = new Schema({
       unique: false,
       required: true
   },
+  admin: {
+    type: Boolean,
+    unique: false,
+    required: true,
+    default: false
+},
   createdAt: {
       type: Date,
       default: Date.now()
@@ -38,7 +44,7 @@ usersSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
 
-usersSchema.methods.compareSync = function(password, encrypted) {
+usersSchema.methods.validPassword = function(password, encrypted) {
     return bcrypt.compareSync(password, encrypted);
 }
 
