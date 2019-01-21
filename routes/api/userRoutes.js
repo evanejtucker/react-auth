@@ -8,7 +8,10 @@ router.post("/login", passport.authenticate("local", {
   failureFlash : true
 }), function (req, res, next) {
   console.log("sign in successful")
-  res.json(req.user);
+  res.json({
+    user: req.user,
+    loggedIn: true
+  });
 });
 
 router.post("/signup", function(req, res, next) {
@@ -45,7 +48,10 @@ router.get("/unauthorized", function(req, res, next) {
 });
 
 router.get("/profile", authMiddleware.isLoggedIn, function(req, res, next) {
-  res.json(req.user);
+  res.json({
+    user: req.user,
+    loggedIn: true
+  });
 });
 
 router.get("/logout", authMiddleware.logoutUser, function(req, res, next) {
@@ -53,9 +59,11 @@ router.get("/logout", authMiddleware.logoutUser, function(req, res, next) {
 });
 
 router.get("/admin", authMiddleware.isAdmin, function(req, res, next) {
-  res.json(req.user);
+  res.json({
+    user: req.user,
+    loggedIn: true
+  });
 });
-
 
 
 module.exports = router;
