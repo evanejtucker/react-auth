@@ -23,9 +23,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/", (req, res, next)=> {
-    res.send("hello world")
-});
+// app.get("/", (req, res, next)=> {
+//     res.send("hello world")
+// });
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/build"));
+}
 
 app.use(routes);
 
