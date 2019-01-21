@@ -19,8 +19,13 @@
   "homepage": "https://github.com/evanejtucker/react-auth#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "connect-flash": "^0.1.1",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "mongoose": "^5.4.5",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
