@@ -17,7 +17,6 @@ class UserProvider extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state);
         this.isLoggedIn();
     }
 
@@ -31,7 +30,6 @@ class UserProvider extends Component {
 
     handleLogin = event => {
         event.preventDefault();
-        console.log(this.state)
         if (this.state.username && this.state.password) {
             API.login({
                 username: this.state.username,
@@ -43,9 +41,9 @@ class UserProvider extends Component {
                         user: user.data.user
                     });
                     console.log("log in successful");
-                    console.log(this.state);
                     window.location.href = '/profile';
                 } else {
+                    console.log("Something went wrong :(")
                     console.log(user);
                 }
             });
@@ -54,7 +52,6 @@ class UserProvider extends Component {
 
     handleSignup = event => {
         event.preventDefault();
-        console.log(this.state)
         if (this.state.username && this.state.password) {
             API.signup({
                 firstname: this.state.firstname,
@@ -69,8 +66,8 @@ class UserProvider extends Component {
                         user: user.data.user
                     });
                     console.log("log in successful")
-                    console.log(this.state)
                 } else {
+                    console.log("something went wrong :(")
                     console.log(user.data);
                 }
             });
@@ -80,16 +77,26 @@ class UserProvider extends Component {
     isLoggedIn = ()=> {
         if (!this.state.loggedIn) {
             API.isLoggedIn().then(user => {
-                console.log(user);
                 if(user.data.loggedIn) {
                     this.setState({
                         loggedIn: true,
                         user: user.data.user
                     });
-                     
                 } else {
                     console.log(user.data.message);
                 }
+            })
+        }
+    }
+
+    logout = ()=> {
+        if (this.state.loggedIn) {
+            API.logout().then(()=> {
+                console.log("logged out successfully");
+                this.setState({
+                    loggedIn: false,
+                    user: null
+                })
             })
         }
     }
@@ -99,7 +106,8 @@ class UserProvider extends Component {
             data: this.state,
             inputChange: this.handleInputChange,
             handleLogin: this.handleLogin,
-            handleSignup: this.handleSignup
+            handleSignup: this.handleSignup,
+            logout: this.logout
         }
         return (
             <UserContext.Provider value={

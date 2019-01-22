@@ -1,18 +1,26 @@
 import React, { Component } from "react";
 import "./Profile.scss";
 import { UserConsumer } from '../../context';
+import { Button } from "reactstrap";
+import { Link} from "react-router-dom"
 
 
 function Profile(props) {
     return (
         <UserConsumer>
-        {({ data, inputChange, handleLogin, handleSignup }) => (
+        {({ data, logout }) => (
         <div className="profileBox">
-            <h1>{data.loggedIn}</h1>
-            {(data.user)? (
-                <h1> Welcome {data.user.firstname}</h1>
+            {(data.loggedIn)? (
+                <div>
+                    <h1> Welcome back {data.user.firstname}</h1>
+                    <Button onClick={logout}>Logout</Button>
+                </div>
             ): (
-                <h1> Log in to view this page </h1>
+                <div>
+                    <h1> Log in to view this page </h1>
+                    <Link to="/login"><Button> Login </Button></Link>
+                    
+                </div>
             )}
         </div>
       )}
