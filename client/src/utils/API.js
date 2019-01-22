@@ -12,5 +12,9 @@ export default {
 
   isLoggedIn: function() {
     return axios.get("/api/users/profile");
+  },
+
+  logout: function() {
+    return axios.get("/api/users/logout")
   }
 };
