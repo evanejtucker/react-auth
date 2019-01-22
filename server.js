@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const colors = require("colors");
 const mongoose = require("mongoose");
 const routes = require("./routes");
@@ -23,9 +23,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.get("/", (req, res, next)=> {
-//     res.send("hello world")
-// });
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
@@ -33,7 +30,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(routes);
 
-mongoose.connect("mongodb://localhost/reactauth", { useNewUrlParser: true }, function(err) {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/reactauth", { useNewUrlParser: true }, function(err) {
     if (err) throw err;
     console.log(`🐆  mongoose connection successful 🐆`.yellow);
     app.listen(PORT, (err)=> {
