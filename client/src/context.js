@@ -10,12 +10,15 @@ class UserProvider extends Component {
         firstname: "",
         lastname: "",
         email: "",
-        username: "jjjjj",
+        username: "",
         password: "",
         loggedIn: false,
-        user: null,
-        inputChange: this.handleInputChange,
-        login: this.handleLogin
+        user: null
+    }
+
+    componentDidMount() {
+        console.log(this.state);
+        this.isLoggedIn();
     }
 
     handleInputChange = event => {
@@ -39,7 +42,9 @@ class UserProvider extends Component {
                         loggedIn: true,
                         user: user.data.user
                     });
-                    console.log("log in successful")
+                    console.log("log in successful");
+                    console.log(this.state);
+                    window.location.href = '/profile';
                 } else {
                     console.log(user);
                 }
@@ -47,23 +52,59 @@ class UserProvider extends Component {
         }
     }
 
-    testfunction = (e)=> {
-        e.preventDefault()
-        console.log('test function working')
+    handleSignup = event => {
+        event.preventDefault();
+        console.log(this.state)
+        if (this.state.username && this.state.password) {
+            API.signup({
+                firstname: this.state.firstname,
+                lastname: this.state.lastname,
+                email: this.state.email,
+                username: this.state.username,
+                password: this.state.password
+            }).then(user => {
+                if (user.data.loggedIn) {
+                    this.setState({
+                        loggedIn: true,
+                        user: user.data.user
+                    });
+                    console.log("log in successful")
+                    console.log(this.state)
+                } else {
+                    console.log(user.data);
+                }
+            });
+        }
+    }
+
+    isLoggedIn = ()=> {
+        if (!this.state.loggedIn) {
+            API.isLoggedIn().then(user => {
+                console.log(user);
+                if(user.data.loggedIn) {
+                    this.setState({
+                        loggedIn: true,
+                        user: user.data.user
+                    });
+                     
+                } else {
+                    console.log(user.data.message);
+                }
+            })
+        }
     }
 
     render() {
+        const contextValue = {
+            data: this.state,
+            inputChange: this.handleInputChange,
+            handleLogin: this.handleLogin,
+            handleSignup: this.handleSignup
+        }
         return (
             <UserContext.Provider value={
-                // {
-                //     state: this.state,
-                //     actions: {
-                //         login: this.handleLogin,
-                //         inputChange: this.handleInputChange
-                //     }
-                // }
-                this.state
-                }>
+                contextValue
+            }>
                 {this.props.children}
             </UserContext.Provider>
         )
