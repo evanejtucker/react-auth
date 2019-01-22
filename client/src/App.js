@@ -5,22 +5,25 @@ import Auth from "./pages/Auth";
 import NoMatch from "./pages/NoMatch";
 import TopNav from "./components/TopNav";
 import { Container } from 'reactstrap';
+import UserProvider from "./context";
 
 function App() {
   return (
-    <Router>
-      <div>
-        <TopNav />
-        <Container>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/login" component={() => <Auth action="login" />}  />
-            <Route exact path="/signup" component={() => <Auth action="signup" />}  />
-            <Route component={NoMatch} />
-          </Switch>
-        </Container>
-      </div>
-    </Router>
+    <UserProvider>
+      <Router>
+        <div>
+          <TopNav />
+          <Container>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/login" component={() => <Auth action="login" />}  />
+              <Route exact path="/signup" component={() => <Auth action="signup" />}  />
+              <Route component={NoMatch} />
+            </Switch>
+          </Container>
+        </div>
+      </Router>
+    </UserProvider>
   );
 }
 

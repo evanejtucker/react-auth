@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import API from "../../utils/API";
 import Login from "../../components/Login";
 import Signup from "../../components/Signup";
-import "./Auth.scss"
+import "./Auth.scss";
+import { UserConsumer } from '../../context';
 
 class Auth extends Component {
   state = {
@@ -35,7 +36,7 @@ class Auth extends Component {
         username: this.state.username,
         password: this.state.password
       }).then(user => {
-        if(user.data.loggedIn) {
+        if (user.data.loggedIn) {
           this.setState({
             loggedIn: true,
             user: user.data.user
@@ -59,7 +60,7 @@ class Auth extends Component {
         username: this.state.username,
         password: this.state.password
       }).then(user => {
-        if(user.data.loggedIn) {
+        if (user.data.loggedIn) {
           this.setState({
             loggedIn: true,
             user: user.data.user
@@ -75,27 +76,31 @@ class Auth extends Component {
 
   render() {
     return (
-        <div className="authBox">
-          {(this.props.action === "login") ? (
-            <Login 
-              username={this.state.username}
-              password={this.state.password}
-              handleInputChange={this.handleInputChange}
-              handleLogin={this.handleLogin}
-            />
-          ):(
+      <UserConsumer>
+      {({ username }) => (
+      <div className="authBox">
+      <h1>{username}</h1>
+        {(this.props.action === "login") ? (
+          <Login
+            username={this.state.username}
+            password={this.state.password}
+            handleInputChange={this.handleInputChange}
+            handleLogin={this.handleLogin}
+          />
+        ) : (
             <Signup
               firstname={this.state.firstname}
               lastname={this.state.lastname}
-              email={this.state.email} 
+              email={this.state.email}
               username={this.state.username}
               password={this.state.password}
               handleInputChange={this.handleInputChange}
               handleSignup={this.handleSignup}
             />
           )}
-          
-        </div>
+      </div>
+    )}
+    </UserConsumer>
     );
   }
 }
