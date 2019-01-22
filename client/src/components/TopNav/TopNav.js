@@ -41,6 +41,9 @@ export default class Navigation extends Component {
                             <NavItem>
                                 <NavLink href="/">Home</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <NavLink href="/profile">Profile</NavLink>
+                            </NavItem>
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>
                                 <i className="fas fa-user-secret"></i>
