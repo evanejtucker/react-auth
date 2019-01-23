@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./Profile.scss";
 import { UserConsumer } from '../../context';
 import { Button } from "reactstrap";

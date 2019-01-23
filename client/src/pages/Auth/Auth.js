@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import API from "../../utils/API";
+import React from "react";
 import Login from "../../components/Login";
 import Signup from "../../components/Signup";
 import "./Auth.scss";
