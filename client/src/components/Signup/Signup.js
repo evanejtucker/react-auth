@@ -5,16 +5,21 @@ import { Link } from "react-router-dom";
 class Signup extends Component {
     state = {
         validPassword: false,
-        confirmPassword: ""
+        confirmPassword: false,
+        validForm: false,
+        password: "",
+        passwordMessage: ""
     }
 
     componentDidMount() {
         console.log(this.props);
+        this.validatePassword();
     }
 
     componentDidUpdate() {
-
-        this.confirmPassword()
+        this.confirmPassword();
+        this.validatePassword();
+        this.passwordMessage();
     }
 
     handleInputChange = event => {
@@ -25,17 +30,65 @@ class Signup extends Component {
         });
     }
 
+    // checks if 2 password fields match
     confirmPassword = () => {
-        if (!this.state.validPassword && this.state.confirmPassword !== "" && this.state.confirmPassword === this.props.password) {
+        if (!this.state.confirmPassword && this.state.password !== "" && this.state.password === this.props.password) {
+            this.setState({
+                confirmPassword: true
+            });
+        }
+        if (this.state.confirmPassword && this.state.password !== this.props.password) {
+            this.setState({
+                confirmPassword: false
+            });
+        }
+    }
+
+    // checks is password meets regex test (at least 8 letters, 1 capital and 1 number)
+    validatePassword = ()=> {
+        let strongPassword = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+        let valid = strongPassword.test(this.props.password);
+
+        if (!this.state.validPassword && valid) {
+            console.log("password is valid");
             this.setState({
                 validPassword: true
             });
         }
-        if (this.state.validPassword && this.state.confirmPassword !== this.props.password) {
+        
+        if (this.state.validPassword && !valid) {
+            console.log("password is not valid");
             this.setState({
                 validPassword: false
             });
         }
+    }
+
+    // displays the password message if it exists
+    passwordMessage = () => {
+
+        let message = "at least 8 letters, 1 capital & 1 number"
+
+        if (this.props.password !== "" && !this.state.validPassword && this.state.passwordMessage !== message) {
+            this.setState({
+                passwordMessage: message
+            });
+        }
+
+        if (this.state.validPassword && this.state.passwordMessage !== "") {
+            this.setState({
+                passwordMessage: ""
+            });
+        }
+
+        if (this.state.passwordMessage === message && this.props.password === "") {
+            this.setState({
+                passwordMessage: ""
+            });
+        }
+
+
+        
     }
 
     render() {
@@ -64,11 +117,12 @@ class Signup extends Component {
                         <Label for="password">Password</Label>
                         <Input type="password" name="password" id="password" placeholder="password" value={this.props.password} onChange={this.props.handleInputChange} />
                     </FormGroup>
+                    <p>{this.state.passwordMessage}</p>
                     <FormGroup>
                         <Label for="confirmPassword">Confirm Password</Label>
-                        <Input type="password" name="confirmPassword" id="confirmPassword" placeholder=" confirm password" value={this.state.password} onChange={this.handleInputChange} />
+                        <Input type="password" name="password" id="confirmPassword" placeholder=" confirm password" value={this.state.password} onChange={this.handleInputChange} />
                     </FormGroup>
-                    {this.state.validPassword ? (
+                    {(this.state.confirmPassword && this.state.validPassword) ? (
                         <Button onClick={this.props.handleSignup} color="primary" block>Signup</Button>
                     ) : (
                         <Button onClick={this.props.handleSignup} color="danger" block disabled>Signup</Button>
