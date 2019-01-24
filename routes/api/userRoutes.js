@@ -22,20 +22,27 @@ router.post("/signup", function(req, res, next) {
       return res.json("user already exists");
     }
     if (!user) {
-      let newUser = new db.User({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password
-      })
-      newUser.password = newUser.generateHash(req.body.password);
-      newUser.save(function(err) {
+      db.User.findOne({email: req.body.email}, function(err, useremail) {
         if (err) throw err;
-        console.log("user saved!");
-        res.redirect(307, "/api/users/login")
-      });
-      
+        if (useremail) {
+          return res.json("email is already in use") 
+        }
+        if (!useremail) {
+          let newUser = new db.User({
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            username: req.body.username,
+            password: req.body.password
+          })
+          newUser.password = newUser.generateHash(req.body.password);
+          newUser.save(function(err) {
+            if (err) throw err;
+            console.log("user saved!");
+            res.redirect(307, "/api/users/login")
+          });
+        }
+      })     
     }
   })
 });
