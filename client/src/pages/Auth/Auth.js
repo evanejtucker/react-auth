@@ -25,6 +25,7 @@ function Auth(props) {
                 password={data.password}
                 handleInputChange={inputChange}
                 handleSignup={handleSignup}
+                message={data.failureMessage}
               />
             )}
         </div>

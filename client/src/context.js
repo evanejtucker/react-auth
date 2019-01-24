@@ -13,7 +13,8 @@ class UserProvider extends Component {
         username: "",
         password: "",
         loggedIn: false,
-        user: null
+        user: null,
+        failureMessage: null
     }
 
     componentDidMount() {
@@ -70,6 +71,9 @@ class UserProvider extends Component {
                 } else {
                     console.log("something went wrong :(")
                     console.log(user.data);
+                    this.setState({
+                        failureMessage: user.data
+                    })
                 }
             });
         }
